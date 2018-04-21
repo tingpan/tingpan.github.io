@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang=Ch>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作为一个安卓初学者，有必要记一下一些笔记来整理一下自己的思路，可能现在的理解比较还处于比较浅白的程度。昨天在编写安卓程序的时候，需要做一个小小的秒表，就需要用到反复执行的指令。去搜了一下，发现了一些相关的话题，ScheduledThreadPoolExecutor ，Timer， Handler  TimerTimer的基本用法是和Timertask一起使用，可以再一定的时间之后，反复执行一些指令">
+<meta name="keywords" content="安卓,并发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓小记-浅谈ThreadPool,Timer,Handler">
+<meta property="og:url" content="http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/index.html">
+<meta property="og:site_name" content="One Punch CAT">
+<meta property="og:description" content="作为一个安卓初学者，有必要记一下一些笔记来整理一下自己的思路，可能现在的理解比较还处于比较浅白的程度。昨天在编写安卓程序的时候，需要做一个小小的秒表，就需要用到反复执行的指令。去搜了一下，发现了一些相关的话题，ScheduledThreadPoolExecutor ，Timer， Handler  TimerTimer的基本用法是和Timertask一起使用，可以再一定的时间之后，反复执行一些指令">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2015-11-20T14:27:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓小记-浅谈ThreadPool,Timer,Handler">
+<meta name="twitter:description" content="作为一个安卓初学者，有必要记一下一些笔记来整理一下自己的思路，可能现在的理解比较还处于比较浅白的程度。昨天在编写安卓程序的时候，需要做一个小小的秒表，就需要用到反复执行的指令。去搜了一下，发现了一些相关的话题，ScheduledThreadPoolExecutor ，Timer， Handler  TimerTimer的基本用法是和Timertask一起使用，可以再一定的时间之后，反复执行一些指令">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>安卓小记-浅谈ThreadPool,Timer,Handler</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/02/05/交叉编译Node-js到安卓/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/02/04/使用MySQL触发器以及正则表达式/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&text=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&is_video=false&description=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=安卓小记-浅谈ThreadPool,Timer,Handler&body=Check out this article: http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&name=安卓小记-浅谈ThreadPool,Timer,Handler&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Timer"><span class="toc-number">1.</span> <span class="toc-text">Timer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程池"><span class="toc-number">2.</span> <span class="toc-text">线程池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Handler"><span class="toc-number">3.</span> <span class="toc-text">Handler</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        安卓小记-浅谈ThreadPool,Timer,Handler
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">One Punch CAT</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-02-05T16:15:58.000Z" itemprop="datePublished">2015-02-05</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/安卓/">安卓</a>, <a class="tag-link" href="/tags/并发/">并发</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>作为一个安卓初学者，有必要记一下一些笔记来整理一下自己的思路，可能现在的理解比较还处于比较浅白的程度。<br>昨天在编写安卓程序的时候，需要做一个小小的秒表，就需要用到反复执行的指令。去搜了一下，发现了一些相关的话题，ScheduledThreadPoolExecutor ，Timer， Handler </p>
+<h3 id="Timer"><a href="#Timer" class="headerlink" title="Timer"></a>Timer</h3><p>Timer的基本用法是和Timertask一起使用，可以再一定的时间之后，反复执行一些指令。基本的用法如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">myTimerTask</span> <span class="keyword">extends</span> <span class="title">TimerTask</span> </span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    @<span class="title">Override</span></span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">void</span> <span class="title">run</span>() </span>&#123;</span><br><span class="line">        <span class="comment">//do something;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    Timer timer = <span class="keyword">new</span> Timer();</span><br><span class="line">    TimerTask task = <span class="keyword">new</span> TestTimerTask();</span><br><span class="line">    timer.schedule(task, <span class="number">500</span>, <span class="number">1000</span>);   </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>Timer是一个简单的单线程的任务调度器。在使用timer时，timer会创建一个TimerThread来执行所有的任务。<strong><em>因此不管有多少任务，都是由这一个线程来实现</em></strong>。所有的任务存放在一个最小堆（TaskQuene）中，这个线程每一次都会从最小堆中取出离当前时间距离最短的任务来执行。如果是执行简单代码还是比较合适的，但是使用Timer有一些比较值得注意的问题</p>
+<ul>
+<li>当其中一个task执行时间较长时，timer会被这个独占，而这个任务后面的任务队列就无法正常进行，会被阻赛。比如当一个任务是死循环时，接下来的任务都不可以被执行</li>
+<li>在timer中，处理异常是比较重要的，因为一个任务的异常没有被处理好时，会导致timer终止</li>
+<li>timer的时间可能并没有那么准确，因为要考虑到任务执行的时间</li>
+<li>timer因为不是在主线程中进行，因此无法更新UI。</li>
+</ul>
+<p>因此，官方API指出并不建议使用Timer在安卓的编程中,使用线程池ScheduledThreadPoolExecutor可以比较好的克服前面两个问题。</p>
+<blockquote>
+<p>Timers schedule one-shot or recurring tasks for execution. Prefer ScheduledThreadPoolExecutor for new code.</p>
+</blockquote>
+<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><p>以下是一个简单的线程池的例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//do something;</span></span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ScheduledThreadPoolExecutor exec = <span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">long</span> period = <span class="number">100</span>; </span><br><span class="line">exec.scheduleAtFixedRate(<span class="keyword">new</span> MyTask(), <span class="number">0</span>, period, TimeUnit.MICROSECONDS);</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> delay = <span class="number">100</span>;</span><br><span class="line">exec.scheduleWithFixedDelay(<span class="keyword">new</span> MyTask(), <span class="number">0</span>, delay, TimeUnit.MICROSECONDS);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>scheduleAtFixedRate() 这个方法可以让你执行一个任务基于一定的初始延迟，然后在这个任务<strong>开始后</strong>，每隔period的时间，会再执行一次</li>
+<li>scheduleAtFixedRate() 这个方法可以让你执行一个任务基于一定的初始延迟，然后在这个任务<strong>结束时</strong>，每隔period的时间，会再执行一次<br>因此使用线程池可以比较精确的定义时间，也可以解决线程阻塞的问题，是Timer的一种优化方法。</li>
+</ul>
+<h3 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h3><p>handler和MessageQueue一起工作。Handler主要是在主线程中处理MessageQueue中的的信息，因此它可以用来更新UI的内容。在Handler中定义反复某一项任务的大概思路是在每一个handler处理信息的主体中给自己发送新的信息，以达到反复执行的效果<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Handler timeHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">            <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                    <span class="comment">//doSomething</span></span><br><span class="line">                    <span class="keyword">this</span>.sendEmptyMessageDelayed(<span class="number">1</span>, <span class="number">1000</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Timer"><span class="toc-number">1.</span> <span class="toc-text">Timer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程池"><span class="toc-number">2.</span> <span class="toc-text">线程池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Handler"><span class="toc-number">3.</span> <span class="toc-text">Handler</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&text=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&is_video=false&description=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=安卓小记-浅谈ThreadPool,Timer,Handler&body=Check out this article: http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&title=安卓小记-浅谈ThreadPool,Timer,Handler"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/02/05/安卓小记-如何使用Handler循环执行任务/&name=安卓小记-浅谈ThreadPool,Timer,Handler&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

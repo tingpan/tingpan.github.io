@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang=Ch>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Hexo是一个基于node.js的非常简单又很轻的博客系统，它不用依赖数据库，支持Markdown和输出静态页面，还可以一键部署到Github上。因此使用它和Github pages可以非常简单的搭建一个个人博客。 在本地搭建Hexo环境（在Linux/Mac OS）只需要以下几个简单步骤:  首先需要安装node.js(此步略过) 安装Hexo 使用Hexo创建个人博客 配置文件  安装 Hex">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Github和Hexo搭建个人博客1——配置本地Hexo环境">
+<meta property="og:url" content="http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/index.html">
+<meta property="og:site_name" content="One Punch CAT">
+<meta property="og:description" content="Hexo是一个基于node.js的非常简单又很轻的博客系统，它不用依赖数据库，支持Markdown和输出静态页面，还可以一键部署到Github上。因此使用它和Github pages可以非常简单的搭建一个个人博客。 在本地搭建Hexo环境（在Linux/Mac OS）只需要以下几个简单步骤:  首先需要安装node.js(此步略过) 安装Hexo 使用Hexo创建个人博客 配置文件  安装 Hex">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2015-11-20T14:29:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Github和Hexo搭建个人博客1——配置本地Hexo环境">
+<meta name="twitter:description" content="Hexo是一个基于node.js的非常简单又很轻的博客系统，它不用依赖数据库，支持Markdown和输出静态页面，还可以一键部署到Github上。因此使用它和Github pages可以非常简单的搭建一个个人博客。 在本地搭建Hexo环境（在Linux/Mac OS）只需要以下几个简单步骤:  首先需要安装node.js(此步略过) 安装Hexo 使用Hexo创建个人博客 配置文件  安装 Hex">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>使用Github和Hexo搭建个人博客1——配置本地Hexo环境</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/02/01/使用Github和Hexo搭建个人博客2——部署到Github/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&text=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&is_video=false&description=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用Github和Hexo搭建个人博客1——配置本地Hexo环境&body=Check out this article: http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&name=使用Github和Hexo搭建个人博客1——配置本地Hexo环境&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Hexo"><span class="toc-number">1.</span> <span class="toc-text">安装 Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建个人博客"><span class="toc-number">2.</span> <span class="toc-text">创建个人博客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置博客"><span class="toc-number">3.</span> <span class="toc-text">配置博客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建第一篇博文"><span class="toc-number">4.</span> <span class="toc-text">创建第一篇博文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动Hexo"><span class="toc-number">5.</span> <span class="toc-text">启动Hexo</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        使用Github和Hexo搭建个人博客1——配置本地Hexo环境
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">One Punch CAT</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-02-01T04:40:02.000Z" itemprop="datePublished">2015-01-31</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/hexo/">hexo</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Hexo是一个基于node.js的非常简单又很轻的博客系统，它不用依赖数据库，支持Markdown和输出静态页面，还可以一键部署到Github上。因此使用它和Github pages可以非常简单的搭建一个个人博客。</p>
+<p>在本地搭建Hexo环境（在Linux/Mac OS）只需要以下几个简单步骤:</p>
+<ul>
+<li>首先需要安装<a href="http://nodejs.org/" target="_blank" rel="noopener">node.js</a>(此步略过)</li>
+<li>安装Hexo</li>
+<li>使用Hexo创建个人博客</li>
+<li>配置文件</li>
+</ul>
+<h3 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h3><p>安装Hexo只需要几一个简单的命令，使用npm包管理器可以很简单的从命令行安装。 -g的含义是使用Globle来安装，这样Hexo就被自动配置到环境变量了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo -g</span><br></pre></td></tr></table></figure>
+<h3 id="创建个人博客"><a href="#创建个人博客" class="headerlink" title="创建个人博客"></a>创建个人博客</h3><p>安装完Hexo之后，使用以下指令可以很简单的创建博客</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init 你的希望创建的文件路径</span><br></pre></td></tr></table></figure>
+<h3 id="配置博客"><a href="#配置博客" class="headerlink" title="配置博客"></a>配置博客</h3><p>使用命令进入到博客的根目录，使用npm install即可把博客所需要的包安装到目录内<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> 博客目录</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure></p>
+<h3 id="创建第一篇博文"><a href="#创建第一篇博文" class="headerlink" title="创建第一篇博文"></a>创建第一篇博文</h3><p>使用 “hexo n 博文名” 即可创建博文，创建的博文会放在./source/_posts内。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo n 博文名</span><br></pre></td></tr></table></figure></p>
+<h3 id="启动Hexo"><a href="#启动Hexo" class="headerlink" title="启动Hexo"></a>启动Hexo</h3><p>最后使用以下指令即可以启动博客服务器，默认端口为4000，可以在配置文件“_config.yml”中更改，启动博客后，访问“localhost:4444”即可看到自己架设的博客。在博客运行中，使用Ctrl+C可以关闭博客页面<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br><span class="line">$ [info] Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure></p>
+<p>也可以使用<code>$ hexo s &amp;</code>以下命令让hexo在后台运行,然后用kill将它结束</p>
+<p>以上，一个简单的博客就在本地架设好了。<br>下一章将描述如何将博客托管到Github上。</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Hexo"><span class="toc-number">1.</span> <span class="toc-text">安装 Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建个人博客"><span class="toc-number">2.</span> <span class="toc-text">创建个人博客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置博客"><span class="toc-number">3.</span> <span class="toc-text">配置博客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建第一篇博文"><span class="toc-number">4.</span> <span class="toc-text">创建第一篇博文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动Hexo"><span class="toc-number">5.</span> <span class="toc-text">启动Hexo</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&text=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&is_video=false&description=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=使用Github和Hexo搭建个人博客1——配置本地Hexo环境&body=Check out this article: http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&title=使用Github和Hexo搭建个人博客1——配置本地Hexo环境"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/01/31/使用Github和Hexo搭建个人博客1——配置本地Hexo环境/&name=使用Github和Hexo搭建个人博客1——配置本地Hexo环境&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang=Ch>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="今天想稍微记一下写安卓程序中一个很重要的组成部分，Service服务, 它非常适合做一些符合一下特质的任务。  在后台可以执行，不需要与UI进行交互的任务 需要长时间运行的任务（下载，更新，数据操作等）虽然是这样，除非使用线程Thread和Runnable来执行它的任务，Service的任务仍然是在主线程中进行的。这里简单讲一下如何 注册服务 创建服务 开始服务 使用Binding Service">
+<meta name="keywords" content="安卓">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓小记-初识Service">
+<meta property="og:url" content="http://yoursite.com/2015/02/11/安卓小记-初识Service/index.html">
+<meta property="og:site_name" content="One Punch CAT">
+<meta property="og:description" content="今天想稍微记一下写安卓程序中一个很重要的组成部分，Service服务, 它非常适合做一些符合一下特质的任务。  在后台可以执行，不需要与UI进行交互的任务 需要长时间运行的任务（下载，更新，数据操作等）虽然是这样，除非使用线程Thread和Runnable来执行它的任务，Service的任务仍然是在主线程中进行的。这里简单讲一下如何 注册服务 创建服务 开始服务 使用Binding Service">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2015-11-20T14:28:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓小记-初识Service">
+<meta name="twitter:description" content="今天想稍微记一下写安卓程序中一个很重要的组成部分，Service服务, 它非常适合做一些符合一下特质的任务。  在后台可以执行，不需要与UI进行交互的任务 需要长时间运行的任务（下载，更新，数据操作等）虽然是这样，除非使用线程Thread和Runnable来执行它的任务，Service的任务仍然是在主线程中进行的。这里简单讲一下如何 注册服务 创建服务 开始服务 使用Binding Service">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>安卓小记-初识Service</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/02/12/安卓小记-如何自定义自己的List/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/02/10/安卓小贴士-如何使用adb测试可执行脚本/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/02/11/安卓小记-初识Service/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&text=安卓小记-初识Service"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&is_video=false&description=安卓小记-初识Service"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=安卓小记-初识Service&body=Check out this article: http://yoursite.com/2015/02/11/安卓小记-初识Service/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&name=安卓小记-初识Service&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#注册服务"><span class="toc-number">1.</span> <span class="toc-text">注册服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建自定义服务"><span class="toc-number">2.</span> <span class="toc-text">创建自定义服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开使服务与结束服务"><span class="toc-number">3.</span> <span class="toc-text">开使服务与结束服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Binding-Service"><span class="toc-number"></span> <span class="toc-text">Binding Service</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        安卓小记-初识Service
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">One Punch CAT</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-02-12T02:47:17.000Z" itemprop="datePublished">2015-02-11</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/安卓/">安卓</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>今天想稍微记一下写安卓程序中一个很重要的组成部分，Service服务, 它非常适合做一些符合一下特质的任务。</p>
+<ul>
+<li>在后台可以执行，不需要与UI进行交互的任务</li>
+<li>需要长时间运行的任务（下载，更新，数据操作等）<br>虽然是这样，除非使用线程Thread和Runnable来执行它的任务，Service的任务仍然是在主线程中进行的。<br>这里简单讲一下如何</li>
+<li>注册服务</li>
+<li>创建服务</li>
+<li>开始服务</li>
+<li>使用Binding Service</li>
+</ul>
+<h3 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h3><p>每一个服务在被使用前都必须要先注册，注册的方法是修改AndroidManifest.xml这个文件,加入Service的名字，当然还有更多的标签可以被使用，这里先不讲<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">service</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">".ServiceName"</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">service</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="创建自定义服务"><a href="#创建自定义服务" class="headerlink" title="创建自定义服务"></a>创建自定义服务</h3><p>创建自己的服务也非常简单，只要创建一个新类继承 Service类，然后重写一些必要的Method就可以了。大概的框架如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onStartCommand</span><span class="params">(Intent intent, <span class="keyword">int</span> flags, <span class="keyword">int</span> startId)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">return</span>  START_STICKY</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>onCreate()会在Service第一次被创建时调用。</li>
+<li>onStartCommand会在startService()执行时被调用。</li>
+<li>onDestroy()会在stopService()执行时被调用。</li>
+<li>onBind()会在bindService()执行时被调用。</li>
+</ul>
+<p>如果想要调用其他线程来执行任务，可以使用如下框架<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onStartCommand</span><span class="params">(Intent intent, <span class="keyword">int</span> flags, <span class="keyword">int</span> startId)</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;  </span><br><span class="line">        <span class="meta">@Override</span>  </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123; </span><br><span class="line">            <span class="comment">// 开始执行后台任务  </span></span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;).start();  </span><br><span class="line">    <span class="keyword">return</span> START_STICKY;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="开使服务与结束服务"><a href="#开使服务与结束服务" class="headerlink" title="开使服务与结束服务"></a>开使服务与结束服务</h3><p>开始服务和结束服务都是在主线程构建一个新的<code>Intent i</code>，然后调用<code>startService(i)</code>和<code>stopService(i)</code>来对应执行<code>onStartCommand()</code>和<code>onDestroy()</code>方法。具体的代码框架如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;  </span><br><span class="line">    ...</span><br><span class="line">    Intent myService = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, MyService.class);</span><br><span class="line">    startService(myService);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;  </span><br><span class="line">    ...</span><br><span class="line">    Intent myService = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, MyService.class);</span><br><span class="line">    stopService(myService);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要注意的是，只有在第一次使用<code>startService</code>的时候<code>onCreate()</code>这个方法才会被调用，以后再执行<code>startService</code>时，都只会调用<code>onStartCommand()</code>这个方法。另外不管启动多少次服务，只要调用一次停止服务就可以停止。停止服务可以从不同的Activity中调用。在停止服务前要确定服务已经与Activity解除绑定（处于unbind的状态）才行。</p>
+<p>另外，在<code>onStartCommand()</code>这个方法中，会返回一个int值，这个值的作用是告诉系统服务的restart状态，具体如下</p>
+<ul>
+<li><p><code>START_STICKY</code>：如果service进程被kill掉，保留service的状态为开始状态，但不保留递送的intent对象。随后系统会尝试重新创建service，由于服务状态为开始状态，所以创建服务后一定会调用onStartCommand(Intent,int,int)方法。如果在此期间没有任何启动命令被传递到service，那么参数Intent将为null。</p>
+</li>
+<li><p><code>START_NOT_STICKY</code>：“非粘性的”。使用这个返回值时，如果在执行完onStartCommand后，服务被异常kill掉，系统不会自动重启该服务。</p>
+</li>
+<li><p><code>START_REDELIVER_INTENT</code>：重传Intent。使用这个返回值时，如果在执行完onStartCommand后，服务被异常kill掉，系统会自动重启该服务，并将Intent的值传入。</p>
+</li>
+<li><p><code>START_STICKY_COMPATIBILITY</code>：START_STICKY的兼容版本，但不保证服务被kill后一定能重启。</p>
+</li>
+</ul>
+<h2 id="Binding-Service"><a href="#Binding-Service" class="headerlink" title="Binding Service"></a>Binding Service</h2><p>Bind Service可以允许Activity与服务进行交互，交互的方式是允许Activity调用Bind中的public方法。使用Bind Service需要在主线程创建一个ServiceConnection对象。这个对象会在Service的onBind()这个方法被调用后调用。onBind方法会返回一个IBinder对象给ServiceConnection。而onBind方法会在主线程调用bindService()后被调用。</p>
+<p>在Service中<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    MyBinder myBinder = <span class="keyword">new</span> MyBinder</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> myBinder;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">myBinder</span> <span class="keyword">extends</span> <span class="title">Binder</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">myTask</span><span class="params">()</span></span>&#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在主线程中<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;  </span><br><span class="line">    ServiceConnection myConnection = <span class="keyword">new</span> MyConnection();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> class MyConnection extends <span class="title">ServiceConnection</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span>  </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName name)</span> </span>&#123;&#125;  </span><br><span class="line">  </span><br><span class="line">        <span class="meta">@Override</span>  </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName name, IBinder service)</span></span></span><br><span class="line"><span class="function">        </span>&#123;  </span><br><span class="line">            myBinder = (MyService.MyBinder) service;  </span><br><span class="line">            myBinder.myTask();  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;  </span><br><span class="line">        ...</span><br><span class="line">        Intent bindIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, MyService.class);  </span><br><span class="line">        bindService(bindIntent, myConnection, BIND_AUTO_CREATE);</span><br><span class="line">        <span class="comment">//第三个变量意为若在调用此方法时，服务没有开启，则自动开启服务。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果要将服务于Activity解除绑定，只需要调用unbindService方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;  </span><br><span class="line">     ...</span><br><span class="line">     unbindService(connection);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://blog.csdn.net/guolin_blog/article/details/11952435" target="_blank" rel="noopener">参考资料</a></p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#注册服务"><span class="toc-number">1.</span> <span class="toc-text">注册服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建自定义服务"><span class="toc-number">2.</span> <span class="toc-text">创建自定义服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开使服务与结束服务"><span class="toc-number">3.</span> <span class="toc-text">开使服务与结束服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Binding-Service"><span class="toc-number"></span> <span class="toc-text">Binding Service</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/02/11/安卓小记-初识Service/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&text=安卓小记-初识Service"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&is_video=false&description=安卓小记-初识Service"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=安卓小记-初识Service&body=Check out this article: http://yoursite.com/2015/02/11/安卓小记-初识Service/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&title=安卓小记-初识Service"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/02/11/安卓小记-初识Service/&name=安卓小记-初识Service&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

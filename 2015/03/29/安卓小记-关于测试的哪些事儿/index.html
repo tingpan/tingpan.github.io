@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang=Ch>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="在Group Project中，因为写的程式比较简单，但是其中涉及到服务，多线程以及调用外部命令，测试反而成为了最让人头疼的事情，（以前从来没有写过Test）。所以这里记关于Test的入门笔记。 为什么需要Test在没有写Test之前，一直觉得手动Run几次程序执行Test就足够了，但是事实上，每一个程序里都有很多容易被忽视的问题，例如:  内存操作的问题，空指针。 Activity生命周期的问题">
+<meta name="keywords" content="安卓">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓小记-关于测试的哪些事儿">
+<meta property="og:url" content="http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/index.html">
+<meta property="og:site_name" content="One Punch CAT">
+<meta property="og:description" content="在Group Project中，因为写的程式比较简单，但是其中涉及到服务，多线程以及调用外部命令，测试反而成为了最让人头疼的事情，（以前从来没有写过Test）。所以这里记关于Test的入门笔记。 为什么需要Test在没有写Test之前，一直觉得手动Run几次程序执行Test就足够了，但是事实上，每一个程序里都有很多容易被忽视的问题，例如:  内存操作的问题，空指针。 Activity生命周期的问题">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2015-03-29T21:20:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓小记-关于测试的哪些事儿">
+<meta name="twitter:description" content="在Group Project中，因为写的程式比较简单，但是其中涉及到服务，多线程以及调用外部命令，测试反而成为了最让人头疼的事情，（以前从来没有写过Test）。所以这里记关于Test的入门笔记。 为什么需要Test在没有写Test之前，一直觉得手动Run几次程序执行Test就足够了，但是事实上，每一个程序里都有很多容易被忽视的问题，例如:  内存操作的问题，空指针。 Activity生命周期的问题">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>安卓小记-关于测试的哪些事儿</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/03/29/安卓小记-自定义ListView/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/02/12/安卓小记-Activity的生命周期/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&text=安卓小记-关于测试的哪些事儿"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&is_video=false&description=安卓小记-关于测试的哪些事儿"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=安卓小记-关于测试的哪些事儿&body=Check out this article: http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&name=安卓小记-关于测试的哪些事儿&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么需要Test"><span class="toc-number">1.</span> <span class="toc-text">为什么需要Test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test的选择"><span class="toc-number">2.</span> <span class="toc-text">Test的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第一个测试"><span class="toc-number">3.</span> <span class="toc-text">第一个测试</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        安卓小记-关于测试的哪些事儿
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">One Punch CAT</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-03-30T01:54:45.000Z" itemprop="datePublished">2015-03-29</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/安卓/">安卓</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>在Group Project中，因为写的程式比较简单，但是其中涉及到服务，多线程以及调用外部命令，测试反而成为了最让人头疼的事情，（以前从来没有写过Test）。所以这里记关于Test的入门笔记。</p>
+<h3 id="为什么需要Test"><a href="#为什么需要Test" class="headerlink" title="为什么需要Test"></a>为什么需要Test</h3><p>在没有写Test之前，一直觉得手动Run几次程序执行Test就足够了，但是事实上，每一个程序里都有很多容易被忽视的问题，例如:</p>
+<ul>
+<li>内存操作的问题，空指针。</li>
+<li>Activity生命周期的问题。</li>
+<li>在不同系统环境下表现的问题。</li>
+</ul>
+<p>这一些问题在没有多次测试或者模拟环境的帮助下，可能很难被发现，因此测试的必要性便被体现了出来。</p>
+<h3 id="Test的选择"><a href="#Test的选择" class="headerlink" title="Test的选择"></a>Test的选择</h3><p>根据我目前的了解，安卓提供一些自带的测试类，比较常用的有: </p>
+<ul>
+<li>ActivityTestCase<activityname> - 这个类对每一个Activity提供独立的测试环境，不提供UI线程，比较合适与对每一个Activity进行隔离的UnitTest</activityname></li>
+<li>InstrumentTestCase2<activityname> - 这个类主要提供UI交互的测试，他有自己的UI线程，在运行测试的时候，如果打开手机可以看见App的界面。</activityname></li>
+</ul>
+<h3 id="第一个测试"><a href="#第一个测试" class="headerlink" title="第一个测试"></a>第一个测试</h3><p>因为我在Project使用第一种测试比较多，所以接下来就以ActivityTestCase为例子进行测试。</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么需要Test"><span class="toc-number">1.</span> <span class="toc-text">为什么需要Test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test的选择"><span class="toc-number">2.</span> <span class="toc-text">Test的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第一个测试"><span class="toc-number">3.</span> <span class="toc-text">第一个测试</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&text=安卓小记-关于测试的哪些事儿"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&is_video=false&description=安卓小记-关于测试的哪些事儿"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=安卓小记-关于测试的哪些事儿&body=Check out this article: http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&title=安卓小记-关于测试的哪些事儿"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/03/29/安卓小记-关于测试的哪些事儿/&name=安卓小记-关于测试的哪些事儿&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

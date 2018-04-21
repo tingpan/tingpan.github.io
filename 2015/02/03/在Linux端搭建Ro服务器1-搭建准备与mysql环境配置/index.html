@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang=Ch>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="以前在网上找了很多在如何Linux服务器搭建Ro私服的教程，但是都没有找到，如今终于成功，算是做一下小笔记吧。本章包含  服务器所需依赖包 配置Mysql  rAthena是Github上的一个Ro服务器模拟器的开源项目，提供源代码并且依赖mysql服务器，因此可以很方便的在Linux环境下搭建。但是rAthena的npc汉化并不是很完全[也有可能是我并不是太了解Ro私服有关的脚本] 搭建服务器所">
+<meta name="keywords" content="服务器,ro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Linux端搭建Ro服务器1--搭建准备与mysql环境配置">
+<meta property="og:url" content="http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/index.html">
+<meta property="og:site_name" content="One Punch CAT">
+<meta property="og:description" content="以前在网上找了很多在如何Linux服务器搭建Ro私服的教程，但是都没有找到，如今终于成功，算是做一下小笔记吧。本章包含  服务器所需依赖包 配置Mysql  rAthena是Github上的一个Ro服务器模拟器的开源项目，提供源代码并且依赖mysql服务器，因此可以很方便的在Linux环境下搭建。但是rAthena的npc汉化并不是很完全[也有可能是我并不是太了解Ro私服有关的脚本] 搭建服务器所">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2015-11-20T14:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Linux端搭建Ro服务器1--搭建准备与mysql环境配置">
+<meta name="twitter:description" content="以前在网上找了很多在如何Linux服务器搭建Ro私服的教程，但是都没有找到，如今终于成功，算是做一下小笔记吧。本章包含  服务器所需依赖包 配置Mysql  rAthena是Github上的一个Ro服务器模拟器的开源项目，提供源代码并且依赖mysql服务器，因此可以很方便的在Linux环境下搭建。但是rAthena的npc汉化并不是很完全[也有可能是我并不是太了解Ro私服有关的脚本] 搭建服务器所">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>在Linux端搭建Ro服务器1--搭建准备与mysql环境配置</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/02/03/在Linux端搭建Ro服务器1-2-服务器配置与运行/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/02/03/补完了寄生兽的漫画/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&text=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&is_video=false&description=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置&body=Check out this article: http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&name=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置&description=&lt;p&gt;以前在网上找了很多在如何Linux服务器搭建Ro私服的教程，但是都没有找到，如今终于成功，算是做一下小笔记吧。本章包含&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务器所需依赖包&lt;/li&gt;
+&lt;li&gt;配置Mysql&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/rathena/rathena&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;rAthena&lt;/a&gt;是Github上的一个Ro服务器模拟器的开源项目，提供源代码并且依赖mysql服务器，因此可以很方便的在Linux环境下搭建。但是rAthena的npc汉化并不是很完全[也有可能是我并不是太了解Ro私服有关的脚本]&lt;/p&gt;
+&lt;h3 id=&#34;搭建服务器所需要的依赖包：&#34;&gt;&lt;a href=&#34;#搭建服务器所需要的依赖包：&#34; class=&#34;headerlink&#34; title=&#34;搭建服务器所需要的依赖包：&#34;&gt;&lt;/a&gt;搭建服务器所需要的依赖包：&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;git&lt;/li&gt;
+&lt;li&gt;make&lt;/li&gt;
+&lt;li&gt;gcc&lt;/li&gt;
+&lt;li&gt;libmysqlclient-dev&lt;/li&gt;
+&lt;li&gt;zlib1g-dev&lt;/li&gt;
+&lt;li&gt;libpcre3-dev (optional, for PCRE support)&lt;/li&gt;
+&lt;li&gt;libssl-dev (required, for compiling with MySQL 5.5)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用以下命令可以在Linux端上安装上述依赖包&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;root $ apt-get update&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;root $ apt-get install git make gcc libmysqlclient-dev zlib1g-dev libpcre3-dev&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在安装完依赖包后，挑选一个自己希望存放ro的文件夹，使用git将rAthena工程从github上拉下来。&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;git &lt;span class=&#34;built_in&#34;&gt;clone&lt;/span&gt; https://github.com/rathena/rathena.git&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;完成上述步骤后，接下来要做的就是配置Sql服务器&lt;/p&gt;
+&lt;h3 id=&#34;配置服务器mysql环境&#34;&gt;&lt;a href=&#34;#配置服务器mysql环境&#34; class=&#34;headerlink&#34; title=&#34;配置服务器mysql环境&#34;&gt;&lt;/a&gt;配置服务器mysql环境&lt;/h3&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#搭建服务器所需要的依赖包："><span class="toc-number">1.</span> <span class="toc-text">搭建服务器所需要的依赖包：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置服务器mysql环境"><span class="toc-number">2.</span> <span class="toc-text">配置服务器mysql环境</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        在Linux端搭建Ro服务器1--搭建准备与mysql环境配置
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">One Punch CAT</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-02-03T06:36:27.000Z" itemprop="datePublished">2015-02-03</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/ro/">ro</a>, <a class="tag-link" href="/tags/服务器/">服务器</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>以前在网上找了很多在如何Linux服务器搭建Ro私服的教程，但是都没有找到，如今终于成功，算是做一下小笔记吧。本章包含</p>
+<ul>
+<li>服务器所需依赖包</li>
+<li>配置Mysql</li>
+</ul>
+<p><a href="https://github.com/rathena/rathena" target="_blank" rel="noopener">rAthena</a>是Github上的一个Ro服务器模拟器的开源项目，提供源代码并且依赖mysql服务器，因此可以很方便的在Linux环境下搭建。但是rAthena的npc汉化并不是很完全[也有可能是我并不是太了解Ro私服有关的脚本]</p>
+<h3 id="搭建服务器所需要的依赖包："><a href="#搭建服务器所需要的依赖包：" class="headerlink" title="搭建服务器所需要的依赖包："></a>搭建服务器所需要的依赖包：</h3><ul>
+<li>git</li>
+<li>make</li>
+<li>gcc</li>
+<li>libmysqlclient-dev</li>
+<li>zlib1g-dev</li>
+<li>libpcre3-dev (optional, for PCRE support)</li>
+<li>libssl-dev (required, for compiling with MySQL 5.5)</li>
+</ul>
+<p>使用以下命令可以在Linux端上安装上述依赖包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root $ apt-get update</span><br><span class="line">root $ apt-get install git make gcc libmysqlclient-dev zlib1g-dev libpcre3-dev</span><br></pre></td></tr></table></figure>
+<p>在安装完依赖包后，挑选一个自己希望存放ro的文件夹，使用git将rAthena工程从github上拉下来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/rathena/rathena.git</span><br></pre></td></tr></table></figure>
+<p>完成上述步骤后，接下来要做的就是配置Sql服务器</p>
+<h3 id="配置服务器mysql环境"><a href="#配置服务器mysql环境" class="headerlink" title="配置服务器mysql环境"></a>配置服务器mysql环境</h3><a id="more"></a>
+<p>首先，我们要确保在服务端正确安装了mysql</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get mysql-server [此处可以自己选择合适的版本]</span><br><span class="line">$ mysql-secure-installation</span><br></pre></td></tr></table></figure>
+<p>安装期间会在弹出框内让你设置相应的root密码等。<br>在安装完Sql后，可以用 “service mysql status” 这个命令来检查SQL服务的运行状态，若是服务没有处于开启的状态，可以使用“service mysql start”来开启<br>在确保服务器开启的情况下，使用以下几行命令可以连接数据库，并创建ro服务器的数据库以及数据库管理员帐号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -u root -p <span class="comment">#使用密码连接数据库</span></span><br><span class="line">mysql&gt; CREATE DATABASE 你希望的数据库名字; <span class="comment">#创建数据库</span></span><br><span class="line">mysql&gt; GRANT ALL ON 刚才创建的数据库名字.* TO </span><br><span class="line">    	  你要的用户名@localhost IDENTIFIED BY <span class="string">"此处输入用户名的密码"</span>; <span class="comment">#生成数据库用户并给予权限</span></span><br></pre></td></tr></table></figure>
+<p>然后我们输入exit推出数据库，接下来需要将所需要的表格导入数据库。移动到rAthena根目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -u username -p 刚才创建的数据库名字  &lt; ./sql-files/main.sql </span><br><span class="line">$ mysql -u username -p 刚才创建的数据库名字  &lt; ./sql-files/log.sql </span><br></pre></td></tr></table></figure>
+<p>如此便把Ro需要使用的几个数据库添加到mysql服务器中了。另外，如果安装phpMyAdmin可以更加方便管理数据库。<br>在下一节将讲述服务器的config配置以及如何运行服务器。</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#搭建服务器所需要的依赖包："><span class="toc-number">1.</span> <span class="toc-text">搭建服务器所需要的依赖包：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置服务器mysql环境"><span class="toc-number">2.</span> <span class="toc-text">配置服务器mysql环境</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&text=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&is_video=false&description=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置&body=Check out this article: http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&title=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/02/03/在Linux端搭建Ro服务器1-搭建准备与mysql环境配置/&name=在Linux端搭建Ro服务器1--搭建准备与mysql环境配置&description=&lt;p&gt;以前在网上找了很多在如何Linux服务器搭建Ro私服的教程，但是都没有找到，如今终于成功，算是做一下小笔记吧。本章包含&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务器所需依赖包&lt;/li&gt;
+&lt;li&gt;配置Mysql&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/rathena/rathena&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;rAthena&lt;/a&gt;是Github上的一个Ro服务器模拟器的开源项目，提供源代码并且依赖mysql服务器，因此可以很方便的在Linux环境下搭建。但是rAthena的npc汉化并不是很完全[也有可能是我并不是太了解Ro私服有关的脚本]&lt;/p&gt;
+&lt;h3 id=&#34;搭建服务器所需要的依赖包：&#34;&gt;&lt;a href=&#34;#搭建服务器所需要的依赖包：&#34; class=&#34;headerlink&#34; title=&#34;搭建服务器所需要的依赖包：&#34;&gt;&lt;/a&gt;搭建服务器所需要的依赖包：&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;git&lt;/li&gt;
+&lt;li&gt;make&lt;/li&gt;
+&lt;li&gt;gcc&lt;/li&gt;
+&lt;li&gt;libmysqlclient-dev&lt;/li&gt;
+&lt;li&gt;zlib1g-dev&lt;/li&gt;
+&lt;li&gt;libpcre3-dev (optional, for PCRE support)&lt;/li&gt;
+&lt;li&gt;libssl-dev (required, for compiling with MySQL 5.5)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用以下命令可以在Linux端上安装上述依赖包&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;root $ apt-get update&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;root $ apt-get install git make gcc libmysqlclient-dev zlib1g-dev libpcre3-dev&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在安装完依赖包后，挑选一个自己希望存放ro的文件夹，使用git将rAthena工程从github上拉下来。&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;git &lt;span class=&#34;built_in&#34;&gt;clone&lt;/span&gt; https://github.com/rathena/rathena.git&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;完成上述步骤后，接下来要做的就是配置Sql服务器&lt;/p&gt;
+&lt;h3 id=&#34;配置服务器mysql环境&#34;&gt;&lt;a href=&#34;#配置服务器mysql环境&#34; class=&#34;headerlink&#34; title=&#34;配置服务器mysql环境&#34;&gt;&lt;/a&gt;配置服务器mysql环境&lt;/h3&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

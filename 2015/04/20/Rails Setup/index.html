@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang=Ch>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="先特别感谢撰写这篇教程的ForestS酱。  Ruby on Rails ，简称 Rails 或 RoR ，是一个以敏捷开发闻名的全栈式Web开发框架。现在就来简单说明一下如何搭建 Rails 的开发环境。 操作系统你需要在以下操作系统中选择一种进行开发，并且能够了解命令行的基本使用方法。  任意 Linux 发行版 Mac OS X  由于我目前用的是 Linux Mint （一个基于 Ubu">
+<meta name="keywords" content="Ruby on Rails">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单介绍 Rails 开发环境的配置与搭建">
+<meta property="og:url" content="http://yoursite.com/2015/04/20/Rails Setup/index.html">
+<meta property="og:site_name" content="One Punch CAT">
+<meta property="og:description" content="先特别感谢撰写这篇教程的ForestS酱。  Ruby on Rails ，简称 Rails 或 RoR ，是一个以敏捷开发闻名的全栈式Web开发框架。现在就来简单说明一下如何搭建 Rails 的开发环境。 操作系统你需要在以下操作系统中选择一种进行开发，并且能够了解命令行的基本使用方法。  任意 Linux 发行版 Mac OS X  由于我目前用的是 Linux Mint （一个基于 Ubu">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2015-11-20T14:29:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单介绍 Rails 开发环境的配置与搭建">
+<meta name="twitter:description" content="先特别感谢撰写这篇教程的ForestS酱。  Ruby on Rails ，简称 Rails 或 RoR ，是一个以敏捷开发闻名的全栈式Web开发框架。现在就来简单说明一下如何搭建 Rails 的开发环境。 操作系统你需要在以下操作系统中选择一种进行开发，并且能够了解命令行的基本使用方法。  任意 Linux 发行版 Mac OS X  由于我目前用的是 Linux Mint （一个基于 Ubu">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>简单介绍 Rails 开发环境的配置与搭建</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/05/31/操作系统总结/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/03/29/安卓小记-自定义ListView/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/04/20/Rails Setup/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/04/20/Rails Setup/&text=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/04/20/Rails Setup/&is_video=false&description=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=简单介绍 Rails 开发环境的配置与搭建&body=Check out this article: http://yoursite.com/2015/04/20/Rails Setup/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/04/20/Rails Setup/&name=简单介绍 Rails 开发环境的配置与搭建&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作系统"><span class="toc-number">1.</span> <span class="toc-text">操作系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-RVM"><span class="toc-number">2.</span> <span class="toc-text">安装 RVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Ruby"><span class="toc-number">3.</span> <span class="toc-text">安装 Ruby</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Rails"><span class="toc-number">4.</span> <span class="toc-text">安装 Rails</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rails-冒烟测试"><span class="toc-number">5.</span> <span class="toc-text">Rails 冒烟测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#值得注意的一点"><span class="toc-number">6.</span> <span class="toc-text">值得注意的一点</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        简单介绍 Rails 开发环境的配置与搭建
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">One Punch CAT</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-04-20T23:34:17.000Z" itemprop="datePublished">2015-04-20</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Ruby-on-Rails/">Ruby on Rails</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>先特别感谢撰写这篇教程的ForestS酱。</p>
+</blockquote>
+<p>Ruby on Rails ，简称 Rails 或 RoR ，是一个以敏捷开发闻名的全栈式Web开发框架。现在就来简单说明一下如何搭建 Rails 的开发环境。</p>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p>你需要在以下操作系统中选择一种进行开发，并且能够了解命令行的基本使用方法。</p>
+<ul>
+<li>任意 Linux 发行版</li>
+<li>Mac OS X</li>
+</ul>
+<p>由于我目前用的是 Linux Mint （一个基于 Ubuntu 的 Linux 发行版），所以接下来的介绍都假设在 Linux Mint 下进行。不过不要担心，因为其他操作系统上的搭建方式也基本雷同，如果搭建过程中感到情况不妙，记得上网搜索喔！</p>
+<h3 id="安装-RVM"><a href="#安装-RVM" class="headerlink" title="安装 RVM"></a>安装 RVM</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3</span><br><span class="line">$ \curl -sSL https://get.rvm.io | bash -s stable --autolibs=<span class="built_in">read</span>-fail</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>加入 <code>--autolibs=read-fail</code> 的原因是，如果执行 <code>sudo apt-get update</code> 时会出现错误（比如<code>Some index files failed to download.</code>），那么 RVM 中 Autolib 插件就会失效。因此你需要将 Autolib 设为 Read Fail ，然后自己手动安装依赖包。</p>
+</blockquote>
+<p>接下来配置终端「作为登录 Shell 运行命令」，然后重新打开终端。</p>
+<p>运行 <code>rvm -v</code> 检查 RVM 是否被正确安装。</p>
+<h3 id="安装-Ruby"><a href="#安装-Ruby" class="headerlink" title="安装 Ruby"></a>安装 Ruby</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看 RVM 提供的 Ruby 版本</span></span><br><span class="line">$ rvm list known</span><br><span class="line"><span class="comment"># 安装官方（MRI）最新版（目前）2.2</span></span><br><span class="line">$ rvm install 2.2</span><br><span class="line"><span class="comment"># 指定默认版本</span></span><br><span class="line">$ rvm --default use 2.2</span><br></pre></td></tr></table></figure>
+<p>运行 <code>ruby -v</code> 测试 Ruby 是否被正确安装。</p>
+<h3 id="安装-Rails"><a href="#安装-Rails" class="headerlink" title="安装 Rails"></a>安装 Rails</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 想查看详细安装过程，可以在后面加 -V</span></span><br><span class="line">$ gem install rails</span><br></pre></td></tr></table></figure>
+<p>运行 <code>rails -v</code> 测试 Rails 是否被正确安装。</p>
+<h3 id="Rails-冒烟测试"><a href="#Rails-冒烟测试" class="headerlink" title="Rails 冒烟测试"></a>Rails 冒烟测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入工作目录</span></span><br><span class="line">$ <span class="built_in">cd</span> workspace/</span><br><span class="line"><span class="comment"># 创建一个 Rails 应用程序</span></span><br><span class="line">$ rails new appname</span><br><span class="line"><span class="comment"># 进入应用程序文件夹</span></span><br><span class="line">$ <span class="built_in">cd</span> appname/</span><br><span class="line"><span class="comment"># 运行应用程序</span></span><br><span class="line">$ rails server</span><br></pre></td></tr></table></figure>
+<p>在浏览器中打开 <a href="http://localhost:3000/" target="_blank" rel="noopener">http://localhost:3000/</a><br>开始你的 Ruby on Rails 之旅吧！</p>
+<h3 id="值得注意的一点"><a href="#值得注意的一点" class="headerlink" title="值得注意的一点"></a>值得注意的一点</h3><p>在整个安装过程中，你最可能会碰到的问题是网络错误，此时可以用到梯子。</p>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作系统"><span class="toc-number">1.</span> <span class="toc-text">操作系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-RVM"><span class="toc-number">2.</span> <span class="toc-text">安装 RVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Ruby"><span class="toc-number">3.</span> <span class="toc-text">安装 Ruby</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-Rails"><span class="toc-number">4.</span> <span class="toc-text">安装 Rails</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rails-冒烟测试"><span class="toc-number">5.</span> <span class="toc-text">Rails 冒烟测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#值得注意的一点"><span class="toc-number">6.</span> <span class="toc-text">值得注意的一点</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/04/20/Rails Setup/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/04/20/Rails Setup/&text=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/04/20/Rails Setup/&is_video=false&description=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=简单介绍 Rails 开发环境的配置与搭建&body=Check out this article: http://yoursite.com/2015/04/20/Rails Setup/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/04/20/Rails Setup/&title=简单介绍 Rails 开发环境的配置与搭建"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/04/20/Rails Setup/&name=简单介绍 Rails 开发环境的配置与搭建&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

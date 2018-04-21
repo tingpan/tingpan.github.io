@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang=Ch>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="考试季快是要过去了，虽然不得不说考试真的很让人心烦，不过多多少少是考试让人去学更多的东西，所以在这里小结一下操作系统。总的来说，操作系统隐藏了丑陋复杂的硬件接口，提供给用户良好，清晰的抽象。课程大体可以分成三块，分别是  进程及线程 - Processes 存储管理 - Memory Management 文件系统 - File System  进程及线程 - Processes什么是进程？- W">
+<meta name="keywords" content="操作系统,课程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统总结笔记 - 进程与线程">
+<meta property="og:url" content="http://yoursite.com/2015/05/31/操作系统总结/index.html">
+<meta property="og:site_name" content="One Punch CAT">
+<meta property="og:description" content="考试季快是要过去了，虽然不得不说考试真的很让人心烦，不过多多少少是考试让人去学更多的东西，所以在这里小结一下操作系统。总的来说，操作系统隐藏了丑陋复杂的硬件接口，提供给用户良好，清晰的抽象。课程大体可以分成三块，分别是  进程及线程 - Processes 存储管理 - Memory Management 文件系统 - File System  进程及线程 - Processes什么是进程？- W">
+<meta property="og:locale" content="Chinese">
+<meta property="og:image" content="http://yoursite.com/img/ops1.png">
+<meta property="og:updated_time" content="2015-11-20T14:27:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统总结笔记 - 进程与线程">
+<meta name="twitter:description" content="考试季快是要过去了，虽然不得不说考试真的很让人心烦，不过多多少少是考试让人去学更多的东西，所以在这里小结一下操作系统。总的来说，操作系统隐藏了丑陋复杂的硬件接口，提供给用户良好，清晰的抽象。课程大体可以分成三块，分别是  进程及线程 - Processes 存储管理 - Memory Management 文件系统 - File System  进程及线程 - Processes什么是进程？- W">
+<meta name="twitter:image" content="http://yoursite.com/img/ops1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>操作系统总结笔记 - 进程与线程</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/11/20/基础算法-字符串-字符串包含/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/04/20/Rails Setup/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/05/31/操作系统总结/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/05/31/操作系统总结/&text=操作系统总结笔记 - 进程与线程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/05/31/操作系统总结/&is_video=false&description=操作系统总结笔记 - 进程与线程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=操作系统总结笔记 - 进程与线程&body=Check out this article: http://yoursite.com/2015/05/31/操作系统总结/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/05/31/操作系统总结/&name=操作系统总结笔记 - 进程与线程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#进程及线程-Processes"><span class="toc-number">1.</span> <span class="toc-text">进程及线程 - Processes</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#什么是进程？-What-is-Process？"><span class="toc-number">1.1.</span> <span class="toc-text">什么是进程？- What is Process？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#进程的状态-Process-States"><span class="toc-number">1.2.</span> <span class="toc-text">进程的状态 - Process States</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#状态转换图-Transition"><span class="toc-number">1.3.</span> <span class="toc-text">状态转换图 - Transition</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#进程控制块-Process-Control-Block"><span class="toc-number">1.4.</span> <span class="toc-text">进程控制块 - Process Control Block</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#上下文切换-Context-switch"><span class="toc-number">1.5.</span> <span class="toc-text">上下文切换 - Context switch</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#系统调用"><span class="toc-number">1.6.</span> <span class="toc-text">系统调用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#调度程序"><span class="toc-number">2.</span> <span class="toc-text">调度程序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#因素"><span class="toc-number">2.1.</span> <span class="toc-text">因素</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#调度算法"><span class="toc-number">2.2.</span> <span class="toc-text">调度算法</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        操作系统总结笔记 - 进程与线程
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">One Punch CAT</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2015-05-31T23:21:50.000Z" itemprop="datePublished">2015-05-31</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/操作系统/">操作系统</a>, <a class="tag-link" href="/tags/课程/">课程</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>考试季快是要过去了，虽然不得不说考试真的很让人心烦，不过多多少少是考试让人去学更多的东西，所以在这里小结一下操作系统。总的来说，操作系统隐藏了丑陋复杂的硬件接口，提供给用户良好，清晰的抽象。<br>课程大体可以分成三块，分别是</p>
+<ul>
+<li>进程及线程 - Processes</li>
+<li>存储管理 - Memory Management</li>
+<li>文件系统 - File System</li>
+</ul>
+<h4 id="进程及线程-Processes"><a href="#进程及线程-Processes" class="headerlink" title="进程及线程 - Processes"></a>进程及线程 - Processes</h4><h5 id="什么是进程？-What-is-Process？"><a href="#什么是进程？-What-is-Process？" class="headerlink" title="什么是进程？- What is Process？"></a>什么是进程？- What is Process？</h5><ul>
+<li>程序的实例 - Running instance of program</li>
+<li>在操作系统中以控制结构注册 - Register with OS using ‘control structures’</li>
+<li>可能被分配了资源 - Resources assgined</li>
+<li>进程控制块: 所有在进行上下文切换时要用的信息都存储在里面 - Process Control Block: All infos to manage process and essential for <em>context switch</em></li>
+</ul>
+<h5 id="进程的状态-Process-States"><a href="#进程的状态-Process-States" class="headerlink" title="进程的状态 - Process States"></a>进程的状态 - Process States</h5><ul>
+<li>创建: 一个新的线程刚刚被创建，等待许可 - New: A process just be created.(Has a PCB) and waiting  to be admitted</li>
+<li>就绪: 进程等待CPU资源 - Ready: A process waiting for CPU</li>
+<li>阻塞: 进程不能继续运行 - Block: A process can not continue</li>
+<li>运行: 进程占用CPU资源中 - Running: A process own CPU</li>
+<li>结束: 进程结束，不会再被执行 - Exit: A process terminated and no longer executed</li>
+</ul>
+<h5 id="状态转换图-Transition"><a href="#状态转换图-Transition" class="headerlink" title="状态转换图 - Transition"></a>状态转换图 - Transition</h5><p><img src="/img/ops1.png" alt="转换图"></p>
+<h5 id="进程控制块-Process-Control-Block"><a href="#进程控制块-Process-Control-Block" class="headerlink" title="进程控制块 - Process Control Block"></a>进程控制块 - Process Control Block</h5><ul>
+<li>进程ID - PID</li>
+<li>进程状态信息 - Process state info (e.g. Stack pointer)</li>
+<li>进程控制信息 - Process control info</li>
+<li>只能在内核态被访问 - Only Access in kernel mode</li>
+</ul>
+<h5 id="上下文切换-Context-switch"><a href="#上下文切换-Context-switch" class="headerlink" title="上下文切换 - Context switch"></a>上下文切换 - Context switch</h5><ul>
+<li>储存进程信息 - Save process states (Counter, Register)</li>
+<li>更新PCB - Update PCB</li>
+<li>将PCB移入队列 - Move PCB to quene</li>
+<li>调度程序选择新PCB -  Scheduler select new PCB</li>
+<li>更新内存，运行线程 - Update memory structure and restore process</li>
+</ul>
+<h5 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h5><ul>
+<li>Unix: fork(), exec()</li>
+<li>Windows: NTCreateProcess()</li>
+<li>Linux: Clone()</li>
+</ul>
+<h4 id="调度程序"><a href="#调度程序" class="headerlink" title="调度程序"></a>调度程序</h4><ul>
+<li>抢占式: 不会被强制切换 - None-Preemptive: only interrupt voluntarily</li>
+<li>非抢占式 - Preemptive<ul>
+<li>可以被强制切换 - enable forced interrupted</li>
+<li>但是会有成本 - generated overhead</li>
+<li>避免垄断CPU - avoid monopolising the CPU</li>
+<li>大多数现代操作系统使用 - most modern OS</li>
+</ul>
+</li>
+</ul>
+<h5 id="因素"><a href="#因素" class="headerlink" title="因素"></a>因素</h5><ul>
+<li>响应时间: 创建到执行的时间 - Response time: create -&gt; first exe</li>
+<li>周转时间: 创建到完成的时间 - Turnaround time: create -&gt; finish</li>
+<li>吞吐量: 每小时完成的任务数 - Throughput: number of jobs executed per house</li>
+<li>公平性: - fairness<ul>
+<li>等待时间 - Waiting time equally distributed？</li>
+<li>饥饿 - Starvation </li>
+</ul>
+</li>
+</ul>
+<h5 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h5><ul>
+<li>先来先服务</li>
+<li>最短作业优先</li>
+<li>轮盘调度</li>
+<li>优先级调度</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#进程及线程-Processes"><span class="toc-number">1.</span> <span class="toc-text">进程及线程 - Processes</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#什么是进程？-What-is-Process？"><span class="toc-number">1.1.</span> <span class="toc-text">什么是进程？- What is Process？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#进程的状态-Process-States"><span class="toc-number">1.2.</span> <span class="toc-text">进程的状态 - Process States</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#状态转换图-Transition"><span class="toc-number">1.3.</span> <span class="toc-text">状态转换图 - Transition</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#进程控制块-Process-Control-Block"><span class="toc-number">1.4.</span> <span class="toc-text">进程控制块 - Process Control Block</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#上下文切换-Context-switch"><span class="toc-number">1.5.</span> <span class="toc-text">上下文切换 - Context switch</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#系统调用"><span class="toc-number">1.6.</span> <span class="toc-text">系统调用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#调度程序"><span class="toc-number">2.</span> <span class="toc-text">调度程序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#因素"><span class="toc-number">2.1.</span> <span class="toc-text">因素</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#调度算法"><span class="toc-number">2.2.</span> <span class="toc-text">调度算法</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/05/31/操作系统总结/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/05/31/操作系统总结/&text=操作系统总结笔记 - 进程与线程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/05/31/操作系统总结/&is_video=false&description=操作系统总结笔记 - 进程与线程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=操作系统总结笔记 - 进程与线程&body=Check out this article: http://yoursite.com/2015/05/31/操作系统总结/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/05/31/操作系统总结/&title=操作系统总结笔记 - 进程与线程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/05/31/操作系统总结/&name=操作系统总结笔记 - 进程与线程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 John Doe
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
