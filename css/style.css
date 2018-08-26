@@ -633,17 +633,18 @@ body {
   letter-spacing: 0.01em;
   font-weight: 200;
   font-style: normal;
-  font-size: 0.8rem;
 }
 #header #nav ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
   line-height: 15px;
+  font-size: 0;
 }
 #header #nav ul a {
   margin-right: 15px;
   color: color-accent-1;
+  font-size: 0.8rem;
 }
 #header #nav ul a:hover {
   background-image: linear-gradient(transparent, transparent 5px, #ff7d6f 5px, #ff7d6f);
@@ -1677,19 +1678,37 @@ article .content .caption {
   left: -2.9em;
   border-radius: 50%;
 }
-#resume #resume-skill .resume-item {
+#resume .inner .resume-logo {
+  width: 80px;
+  height: 80px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: inline-block;
+  vertical-align: middle;
+}
+#resume .inner .resume-content {
+  display: inline-block;
+  vertical-align: middle;
+}
+@media (max-width: 720px) {
+  #resume .resume-item .resume-logo {
+    display: none;
+  }
+}
+#resume-skill .resume-item {
   margin-bottom: 1em;
 }
-#resume #resume-skill .resume-item p.title {
+#resume-skill .resume-item p.title {
   font-weight: normal;
 }
-#resume #resume-skill .resume-item .skill-bar {
+#resume-skill .resume-item .skill-bar {
   background-color: #dad9d9;
   width: 60%;
   height: 10px;
   margin-left: 0.2em;
 }
-#resume #resume-skill .resume-item .filling {
+#resume-skill .resume-item .filling {
   height: 10px;
   background-color: #ff7d6f;
 }
